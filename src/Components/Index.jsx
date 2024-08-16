@@ -9,9 +9,9 @@ const Index = () => {
     const oppenedAccordian = useContext(OppenedAccordian);
     const [usersDataArray, setUsersDataArray] = useState([])
 
-    useEffect(() => {
-        document.title = "Users list";
-    }, []);
+    // useEffect(() => {
+    //     document.title = "Users list";
+    // }, []);
 
     useEffect(() => {
 

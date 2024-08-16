@@ -6,6 +6,10 @@ export const OppenedAccordian = createContext();
 
 function App() {
 
+  useEffect(() => {
+    document.title = "Users list";
+  }, []);
+
   const initialAccordianId = {
     id: null,
     editState: false
