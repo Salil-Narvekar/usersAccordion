@@ -39,8 +39,8 @@ function App() {
       <div className='grid justify-items-center items-start' style={{ backgroundColor: '#FFFFFF' }}>
         <HashRouter>
           <Routes>
-            <Route path='/' element={<Navigate to='/celebritiesList' />} />
-            <Route path='/celebritiesList' element={<Index />} />
+            <Route path='/' element={<Navigate to='/usersList' />} />
+            <Route path='/usersList' element={<Index />} />
           </Routes>
         </HashRouter>
       </div>
