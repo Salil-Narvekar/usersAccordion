@@ -4,7 +4,7 @@ import InputFields from './InputFields';
 import Modal from 'react-modal'
 import FieldTitle from './FieldTitle';
 import FieldValue from './FieldValue';
-import CelebrityName from './CelebrityName';
+import UserFullName from './UserFullName';
 import ValidationText from './ValidationText';
 import { BsPencil } from "react-icons/bs";
 import { BsTrash3 } from "react-icons/bs";
@@ -13,21 +13,21 @@ import { IoIosCheckmarkCircleOutline } from "react-icons/io";
 import { OppenedAccordian } from '../App';
 
 const AccordionCard = ({
-  celebrityId,
-  celebrityFirstName,
-  celebrityLastName,
-  celebrityDob,
-  celebrityGender,
-  celebrityEmail,
+  userId,
+  userFirstName,
+  userLastName,
+  userDob,
+  userGender,
+  userEmail,
   profilePhoto,
-  celebrityCountry,
-  celebrityDiscription,
+  userCountry,
+  userDiscription,
 }) => {
 
   const oppenedAccordian = useContext(OppenedAccordian);
   // console.log(oppenedAccordian.oppenedAccordianId)
 
-  const [celebName, setCelebName] = useState(celebrityFirstName && celebrityLastName ? celebrityFirstName + ' ' + celebrityLastName : '');
+  const [userFullName, setUserFullName] = useState(userFirstName && userLastName ? userFirstName + ' ' + userLastName : '');
   const [accordionOpen, setAccordionOpen] = useState(false)
   const [editState, setEditState] = useState(false)
   const [valueChanged, setValueChanged] = useState(false)
@@ -39,7 +39,7 @@ const AccordionCard = ({
 
   useEffect(() => {
 
-    const birthDate = new Date(celebrityDob);
+    const birthDate = new Date(userDob);
     const today = new Date();
 
     let age = today.getFullYear() - birthDate.getFullYear();
@@ -49,42 +49,42 @@ const AccordionCard = ({
       age--;
     }
 
-    setCelebrityDetails((otherDetails) => ({
+    setUserDetails((otherDetails) => ({
       ...otherDetails,
-      celebrityAge: age,
+      userAge: age,
     }));
 
     setAge(age)
 
-  }, [celebrityDob, age])
+  }, [userDob, age])
 
-  const [celebrityDetails, setCelebrityDetails] = useState({
-    celebrityId: celebrityId ? celebrityId : '',
-    celebrityFirstName: celebrityFirstName ? celebrityFirstName : '',
-    celebrityLastName: celebrityLastName ? celebrityLastName : '',
-    celebrityAge: '' + ' Years',
-    celebrityDob: celebrityDob ? celebrityDob : '',
-    celebrityGender: celebrityGender ? celebrityGender : '',
-    celebrityCountry: celebrityCountry ? celebrityCountry : '',
-    celebrityDiscription: celebrityDiscription ? celebrityDiscription : ''
+  const [userDetails, setUserDetails] = useState({
+    userId: userId ? userId : '',
+    userFirstName: userFirstName ? userFirstName : '',
+    userLastName: userLastName ? userLastName : '',
+    userAge: '' + ' Years',
+    userDob: userDob ? userDob : '',
+    userGender: userGender ? userGender : '',
+    userCountry: userCountry ? userCountry : '',
+    userDiscription: userDiscription ? userDiscription : ''
   })
-  // console.log(celebrityDetails)
+  // console.log(userDetails)
 
   useEffect(() => {
 
-    if (celebName) {
+    if (userFullName) {
 
-      let splitName = celebName.split(' ')
+      let splitName = userFullName.split(' ')
       // console.log(splitName[0], splitName[1])
 
-      setCelebrityDetails((otherDetails) => ({
+      setUserDetails((otherDetails) => ({
         ...otherDetails,
-        celebrityFirstName: splitName[0],
-        celebrityLastName: splitName[1]
+        userFirstName: splitName[0],
+        userLastName: splitName[1]
       }));
 
     }
-  }, [celebName])
+  }, [userFullName])
 
   const openAccordian = (id) => {
 
@@ -112,9 +112,9 @@ const AccordionCard = ({
     // console.log("SelectBox Value", value[0].gender)
 
     setValueChanged(true)
-    setCelebrityDetails((otherDetails) => ({
+    setUserDetails((otherDetails) => ({
       ...otherDetails,
-      celebrityGender: value[0].gender.toLowerCase()
+      userGender: value[0].gender.toLowerCase()
     }));
   };
 
@@ -122,30 +122,30 @@ const AccordionCard = ({
     // console.log(id, typeof(age))
 
     if (parseInt(age) >= 18) {
-      prevDetailsRef.newDetails = { ...celebrityDetails }; 
+      prevDetailsRef.newDetails = { ...userDetails };
       setEditState(true)
       oppenedAccordian.dispatch({ type: "changeId", value: { id: id, editState: true } });
     }
   }
 
   const cancelEdit = (id) => {
-    // console.log(id, celebName)
+    // console.log(id, userFullName)
 
-    setCelebName(prevDetailsRef.newDetails.celebrityFirstName + ' ' + prevDetailsRef.newDetails.celebrityLastName);
+    setUserFullName(prevDetailsRef.newDetails.userFirstName + ' ' + prevDetailsRef.newDetails.userLastName);
     setAge(age)
-    setCelebrityDetails({ ...prevDetailsRef.newDetails });
+    setUserDetails({ ...prevDetailsRef.newDetails });
 
-    // setCelebrityDetails((otherDetails) => ({
+    // setUserDetails((otherDetails) => ({
     //   ...otherDetails,
-    //   celebrityAge: age,
-    //   celebrityDob: celebrityDob,
-    //   celebrityGender: celebrityGender,
-    //   celebrityCountry: celebrityCountry,
-    //   celebrityDiscription: celebrityDiscription
+    //   userAge: age,
+    //   userDob: userDob,
+    //   userGender: userGender,
+    //   userCountry: userCountry,
+    //   userDiscription: userDiscription
     // }));
 
     setEditState(false)
-    setValueChanged(false);
+    setValueChanged(false)
     oppenedAccordian.dispatch({ type: "changeId", value: { id: id, editState: false } });
 
   }
@@ -156,35 +156,36 @@ const AccordionCard = ({
 
     if (valueChanged) {
 
-      let name = celebName.split(" ")
+      let name = userFullName.split(" ")
       let fname = name[0]
       let lname = name[1]
 
       if (!fname || fname === undefined) {
-        return setValidationMessage("Celebrity's first name required")
+        return setValidationMessage("User's first name required")
 
       } else if (!lname || fname === undefined) {
-        return setValidationMessage("Celebrity's last name required")
+        return setValidationMessage("User's last name required")
 
-      } else if (!celebrityDetails.celebrityAge) {
-        return setValidationMessage("Celebrity's age required")
+      } else if (!userDetails.userAge) {
+        return setValidationMessage("User's age required")
 
-      } else if (!celebrityDetails.celebrityGender) {
-        return setValidationMessage("Celebrity's gender required")
+      } else if (!userDetails.userGender) {
+        return setValidationMessage("User's gender required")
 
-      } else if (!celebrityDetails.celebrityCountry) {
-        return setValidationMessage("Celebrity's nationality required")
+      } else if (!userDetails.userCountry) {
+        return setValidationMessage("User's nationality required")
 
-      } else if (!celebrityDetails.celebrityDiscription) {
-        return setValidationMessage("Celebrity's description required")
+      } else if (!userDetails.userDiscription) {
+        return setValidationMessage("User's description required")
 
       } else {
+
         setValidationMessage('')
         setEditState(false)
-        setValueChanged(false)
-        oppenedAccordian.dispatch({ type: "changeId", value: { id: id, editState: editState } });
+        setValueChanged(false);
+        oppenedAccordian.dispatch({ type: "changeId", value: { id: id, editState: false } });
       }
-    }
+    } 
   }
 
   const confirmDelete = (id) => {
@@ -197,7 +198,7 @@ const AccordionCard = ({
   return (
     <div
       className={
-        accordionOpen && oppenedAccordian.oppenedAccordianId.id === celebrityId ?
+        accordionOpen && oppenedAccordian.oppenedAccordianId.id === userId ?
           'border-2 border-slate-200 hover:border-slate-300 duration-500 rounded-lg pl-4 pr-4 h-96'
           :
           'border-2 border-slate-200 hover:border-slate-300 duration-500 rounded-lg pl-4 pr-4 h-24'
@@ -211,7 +212,7 @@ const AccordionCard = ({
             'grid grid-cols-10 items-center cursor-pointer duration-500 rounded-lg h-24'
         }
 
-        onClick={() => openAccordian(celebrityId)}
+        onClick={() => openAccordian(userId)}
       >
         <div className='col-span-2 grid items-center'>
           <ProfilePhoto image={profilePhoto} />
@@ -221,30 +222,30 @@ const AccordionCard = ({
           {
             !editState ?
 
-              <CelebrityName name={celebrityDetails.celebrityFirstName + ' ' + celebrityDetails.celebrityLastName} />
+              <UserFullName name={userDetails.userFirstName + ' ' + userDetails.userLastName} />
               :
               <input
                 className='text-md md:text-lg lg:text-xl text-slate-800 font-medium text-left border border-slate-300 outline-slate-300 rounded-md w-full md:w-36 lg:w-36 h-10 pl-1 pr-1 mt-1'
-                name='celebrityName'
-                id='celebrityName'
+                name='userName'
+                id='userName'
                 type='text'
                 onChange={(e) => {
-                  setCelebName(e.target.value),
+                  setUserFullName(e.target.value),
                     setValueChanged(true)
                 }}
-                placeholder='Enter celebrity name'
-                value={celebName}
+                placeholder='Enter user name'
+                value={userFullName}
               />
           }
         </div>
 
         <div className='col-sapn-1 grid items-center text-right text-2xl text-slate-600'>
-          {accordionOpen && oppenedAccordian.oppenedAccordianId.id === celebrityId ? "-" : "+"}
+          {accordionOpen && oppenedAccordian.oppenedAccordianId.id === userId ? "-" : "+"}
         </div>
       </div>
 
       {
-        accordionOpen && oppenedAccordian.oppenedAccordianId.id === celebrityId &&
+        accordionOpen && oppenedAccordian.oppenedAccordianId.id === userId &&
         <div className='flex flex-col h-4/6 rounded-lg'>
 
           <div className='grid grid-rows-2 basis-1/5 w-full'>
@@ -259,33 +260,33 @@ const AccordionCard = ({
               !editState ?
 
                 <div className='grid grid-cols-3 gap-2 md:gap-6 lg:gap-6 h-10'>
-                  <FieldValue value={celebrityDetails.celebrityAge + " Years"} />
-                  <FieldValue value={celebrityDetails.celebrityGender.charAt(0).toUpperCase() + celebrityDetails.celebrityGender.slice(1)} />
-                  <FieldValue value={celebrityDetails.celebrityCountry} />
+                  <FieldValue value={userDetails.userAge + " Years"} />
+                  <FieldValue value={userDetails.userGender.charAt(0).toUpperCase() + userDetails.userGender.slice(1)} />
+                  <FieldValue value={userDetails.userCountry} />
                 </div>
 
                 :
 
                 <div className='grid grid-cols-3 gap-2 md:gap-6 lg:gap-6 h-10'>
                   <InputFields
-                    name='celebrityAge'
-                    id='celebrityAge'
+                    name='userAge'
+                    id='userAge'
                     type='number'
                     onChange={(e) => {
-                      setCelebrityDetails((otherDetails) => ({
+                      setUserDetails((otherDetails) => ({
                         ...otherDetails,
-                        celebrityAge: e.target.value,
+                        userAge: e.target.value,
                       }));
 
                       setValueChanged(true)
                     }}
-                    placeholder="Enter celebrity's age"
-                    value={celebrityDetails.celebrityAge}
+                    placeholder="Enter user's age"
+                    value={userDetails.userAge}
                   />
 
                   <InputFields
-                    name='celebrityGender'
-                    id='celebrityGender'
+                    name='userGender'
+                    id='userGender'
                     type='selectBox'
                     selectFieldOptions={genderList}
                     labelField='gender'
@@ -293,21 +294,21 @@ const AccordionCard = ({
                     onChange={(values) => setGender(values)}
                     value={[
                       {
-                        gender: celebrityDetails.celebrityGender.charAt(0).toUpperCase() + celebrityDetails.celebrityGender.slice(1)
+                        gender: userDetails.userGender.charAt(0).toUpperCase() + userDetails.userGender.slice(1)
                       }
                     ]}
                   />
 
                   <InputFields
-                    name='celebrityNationality'
-                    id='celebrityNationality'
+                    name='userNationality'
+                    id='userNationality'
                     type='text'
-                    placeholder="Enter celebrity's nationality"
-                    value={celebrityDetails.celebrityCountry}
+                    placeholder="Enter user's nationality"
+                    value={userDetails.userCountry}
                     onChange={(e) => {
-                      setCelebrityDetails((otherDetails) => ({
+                      setUserDetails((otherDetails) => ({
                         ...otherDetails,
-                        celebrityCountry: e.target.value,
+                        userCountry: e.target.value,
                       }));
 
                       setValueChanged(true)
@@ -329,21 +330,21 @@ const AccordionCard = ({
             {
               !editState ?
 
-                <FieldValue value={celebrityDetails.celebrityDiscription} />
+                <FieldValue value={userDetails.userDiscription} />
                 :
                 <InputFields
-                  name='celebrityDescription'
-                  id='celebrityDescription'
+                  name='userDescription'
+                  id='userDescription'
                   type='textarea'
                   onChange={(e) => {
-                    setCelebrityDetails((otherDetails) => ({
+                    setUserDetails((otherDetails) => ({
                       ...otherDetails,
-                      celebrityDiscription: e.target.value,
+                      userDiscription: e.target.value,
                     }));
                     setValueChanged(true)
                   }}
-                  placeholder="Enter celebrity's description"
-                  value={celebrityDetails.celebrityDiscription}
+                  placeholder="Enter user's description"
+                  value={userDetails.userDiscription}
                 />
             }
           </div>
@@ -360,12 +361,12 @@ const AccordionCard = ({
 
                   <BsPencil
                     className={
-                      celebrityDetails.celebrityAge >= 18 ?
+                      userDetails.userAge >= 18 ?
                         'text-cyan-600 cursor-pointer'
                         :
                         'text-cyan-600 cursor-not-allowed'
                     }
-                    onClick={() => edit(celebrityId, celebrityDetails.celebrityAge)}
+                    onClick={() => edit(userId, userDetails.userAge)}
                   />
                 </div>
 
@@ -377,12 +378,12 @@ const AccordionCard = ({
 
                   <MdOutlineCancel
                     className='text-red-600 cursor-pointer'
-                    onClick={() => cancelEdit(celebrityId)}
+                    onClick={() => cancelEdit(userId)}
                   />
 
                   <IoIosCheckmarkCircleOutline
                     className={valueChanged ? 'text-green-600 cursor-pointer' : 'text-green-600 cursor-not-allowed'}
-                    onClick={() => update(celebrityId)}
+                    onClick={() => update(userId)}
                   />
                 </div>
             }
@@ -429,7 +430,7 @@ const AccordionCard = ({
                   rounded-lg text-white text-xs cursor-pointer
                   h-8 w-24'
                 style={{ backgroundColor: '#FF3500' }}
-                onClick={() => confirmDelete(celebrityId)}
+                onClick={() => confirmDelete(userId)}
               >
                 Delete
               </div>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react'
-import CelebritiesJson from '../JSON/celebrities.json'
+import UsersJson from '../JSON/users.json'
 import SearchBar from './SearchBar';
 import AccordionCard from './AccordionCard';
 import { OppenedAccordian } from '../App';
@@ -7,16 +7,16 @@ import { OppenedAccordian } from '../App';
 const Index = () => {
 
     const oppenedAccordian = useContext(OppenedAccordian);
-    const [celebritiesDataArray, setCelebritiesDataArray] = useState([])
+    const [usersDataArray, setUsersDataArray] = useState([])
 
     useEffect(() => {
-        document.title = "FactWise - Task";
+        document.title = "Users list";
     }, []);
 
     useEffect(() => {
 
-        setCelebritiesDataArray(CelebritiesJson)
-        // console.log("Celebrities Json Data Array : ", CelebritiesJson)
+        setUsersDataArray(UsersJson)
+        // console.log("Celebrities Json Data Array : ", UsersJson)
     }, [])
 
     useEffect(() => {
@@ -24,8 +24,8 @@ const Index = () => {
         console.log(oppenedAccordian.oppenedAccordianId.id)
         if (oppenedAccordian.oppenedAccordianId.id) {
 
-            setCelebritiesDataArray((prevCelebrities) =>
-                prevCelebrities.filter(celebrity => celebrity.id !== oppenedAccordian.oppenedAccordianId.id)
+            setUsersDataArray((prevUsers) =>
+                prevUsers.filter(user => user.id !== oppenedAccordian.oppenedAccordianId.id)
             );
         }
 
@@ -39,15 +39,15 @@ const Index = () => {
 
             console.log(e)
             const searchedValue = e.toLowerCase();
-            const filteredCelebrities = celebritiesDataArray.filter((data) =>
+            const filteredCelebrities = usersDataArray.filter((data) =>
                 data.first.toLowerCase().includes(searchedValue) || data.last.toLowerCase().includes(searchedValue)
             );
 
-            setCelebritiesDataArray(filteredCelebrities)
+            setUsersDataArray(filteredCelebrities)
 
         } else {
 
-            setCelebritiesDataArray(CelebritiesJson)
+            setUsersDataArray(UsersJson)
         }
     };
 
@@ -58,18 +58,18 @@ const Index = () => {
 
             <div className='grid gap-4 rounded-lg'>
                 {
-                    celebritiesDataArray.map((data) => (
+                    usersDataArray.map((data) => (
                         <AccordionCard
                             key={data.id}
-                            celebrityId={data.id}
-                            celebrityFirstName={data.first}
-                            celebrityLastName={data.last}
-                            celebrityDob={data.dob}
-                            celebrityGender={data.gender}
-                            celebrityEmail={data.email}
+                            userId={data.id}
+                            userFirstName={data.first}
+                            userLastName={data.last}
+                            userDob={data.dob}
+                            userGender={data.gender}
+                            userEmail={data.email}
                             profilePhoto={data.picture}
-                            celebrityCountry={data.country}
-                            celebrityDiscription={data.description}
+                            userCountry={data.country}
+                            userDiscription={data.description}
                         />
                     ))
                 }
