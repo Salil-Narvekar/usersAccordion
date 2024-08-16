@@ -1,4 +1,4 @@
-import React, { useReducer, createContext } from 'react'
+import React, { useReducer, createContext, useEffect } from 'react'
 import { HashRouter, Routes, Route, Navigate } from "react-router-dom";
 import Index from './Components/Index';
 
@@ -38,7 +38,6 @@ function App() {
   const [oppenedAccordianId, dispatchAccordianId] = useReducer(reducerAccordianId, initialAccordianId);
 
   return (
-
     <OppenedAccordian.Provider value={{ oppenedAccordianId: oppenedAccordianId, dispatch: dispatchAccordianId }}>
       <div className='grid justify-items-center items-start' style={{ backgroundColor: '#FFFFFF' }}>
         <HashRouter>
