@@ -9,7 +9,7 @@ export default defineConfig({
     open: true
   },
   base: "/userAccordion/",
-  // build: {
-  //   outDir: 'build',
-  // },
+  build: {
+    outDir: 'build',
+  },
 })
